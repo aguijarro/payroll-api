@@ -1,23 +1,23 @@
 import os
 
-from flask import Flask, jsonify
-from flask_restx import Resource, Api
-
-# instantiate the app
-app = Flask(__name__)
-api = Api(app)
-
-# set config
-app_settings = os.getenv('APP_SETTINGS')
-app.config.from_object(app_settings)
+from flask import Flask
 
 
-class PayRoll(Resource):
-    def get(self):
-        return{
-            'status': 'success',
-            'message': 'Salary!'
-        }
+def create_app(script_info=None):
+    # instantiate the app
+    app = Flask(__name__)
 
+    # set config
+    app_settings = os.getenv('APP_SETTINGS')
+    app.config.from_object(app_settings)
 
-api.add_resource(PayRoll, '/payroll')
+    # register blueprints
+    from src.api.payroll.payroll import payroll_blueprint
+    app.register_blueprint(payroll_blueprint)
+
+    # shell context for flask cli
+    @app.shell_context_processor
+    def ctx():
+        return {'app': app}
+
+    return app

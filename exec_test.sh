@@ -1,3 +1,4 @@
 #!/bin/sh
 
 docker-compose exec api python -m pytest "src/tests"
+
