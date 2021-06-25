@@ -12,8 +12,8 @@ def create_app(script_info=None):
     app.config.from_object(app_settings)
 
     # register blueprints
-    from src.api.payroll.payroll import payroll_blueprint
-    app.register_blueprint(payroll_blueprint)
+    from src.api.employees.endpoints import employees_blueprint
+    app.register_blueprint(employees_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor
