@@ -3,9 +3,11 @@ import os
 from flask import Flask
 
 
+
 def create_app(script_info=None):
     # instantiate the app
     app = Flask(__name__)
+
 
     # set config
     app_settings = os.getenv('APP_SETTINGS')

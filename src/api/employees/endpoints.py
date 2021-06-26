@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint,jsonify, make_response
 from flask_restx import Resource, Api
 from src.api.employees.actions import EmployeeActions
 
@@ -12,7 +12,12 @@ class EmployeesList(Resource):
         employees = employee_action.get_all_employees()
         if not employees:
             api.abort(404, f"Employees database is empty")
-        return employees, 200
+
+        response = jsonify(employees)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+
+        # return employees, 200
+        return make_response(response, 200)
 
 
 class Employees(Resource):
@@ -20,9 +25,13 @@ class Employees(Resource):
         employee_action = EmployeeActions()
         employee = employee_action.get_employee_by_id(employee_id)
         if not employee:
-            print('aqui')
             api.abort(404, f"Employee {employee_id} does not exist")
-        return employee, 200
+
+        response = jsonify(employee)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+
+        # return employee, 200
+        return make_response(response, 200)
 
 
 api.add_resource(EmployeesList, '/employees')
